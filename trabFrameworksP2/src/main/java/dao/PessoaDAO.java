@@ -1,10 +1,11 @@
 package dao;
 
 import models.Pessoa;
+import persistence.PersistenceUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
 import java.util.List;
 
 public class PessoaDAO implements DAO<Pessoa> {
@@ -12,7 +13,7 @@ public class PessoaDAO implements DAO<Pessoa> {
     private EntityManager manager;
 
     public PessoaDAO() {
-        this.factory = Persistence.createEntityManagerFactory("tiagoFrameworks");
+        this.factory = PersistenceUtil.getEntityManagerFactory();
         this.manager = factory.createEntityManager();
     }
 

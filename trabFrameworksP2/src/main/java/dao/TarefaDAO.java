@@ -1,10 +1,11 @@
 package dao;
 
 import models.Tarefa;
+import persistence.PersistenceUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
 import java.util.List;
 
 public class TarefaDAO implements DAO<Tarefa> {
@@ -12,7 +13,7 @@ public class TarefaDAO implements DAO<Tarefa> {
     private EntityManager manager;
 
     public TarefaDAO() {
-        this.factory = Persistence.createEntityManagerFactory("tiagoFrameworks");
+        this.factory = PersistenceUtil.getEntityManagerFactory();
         this.manager = factory.createEntityManager();
     }
 
