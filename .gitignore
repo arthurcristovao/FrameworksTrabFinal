@@ -44,3 +44,6 @@ buildNumber.properties
 
 #dotenv
 .env
+
+# vscode
+.vscode

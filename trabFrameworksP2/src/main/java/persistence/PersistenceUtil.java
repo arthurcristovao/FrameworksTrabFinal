@@ -2,9 +2,11 @@ package persistence;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class PersistenceUtil {
     private static EntityManagerFactory entityManagerFactory;
@@ -12,11 +14,11 @@ public class PersistenceUtil {
     public static EntityManagerFactory getEntityManagerFactory() {
         if (entityManagerFactory == null) {
             Map<String, String> jpaProperties = new HashMap<>();
+            Dotenv dotenv = Dotenv.load();
 
-            String dbUrl = Objects.requireNonNullElse(System.getenv("TASK_APP_DATABASE_URL"),
-                    "jdbc:mysql://localhost:3306/task_bot_app");
-            String dbUsername = Objects.requireNonNullElse(System.getenv("TASK_APP_DATABASE_USERNAME"), "root");
-            String dbPassword = Objects.requireNonNullElse(System.getenv("TASK_APP_DATABASE_PASSWORD"), "");
+            String dbUrl = dotenv.get("TASK_APP_DATABASE_URL", "jdbc:mysql://localhost:3306/task_bot_app");
+            String dbUsername = dotenv.get("TASK_APP_DATABASE_USERNAME", "root");
+            String dbPassword = dotenv.get("TASK_APP_DATABASE_PASSWORD", "");
 
             jpaProperties.put("javax.persistence.jdbc.url", dbUrl);
             jpaProperties.put("javax.persistence.jdbc.user", dbUsername);

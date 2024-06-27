@@ -22,6 +22,8 @@ for /F "tokens=*" %%a in (%envFile%) do (
 )
 
 :: Execute the JAR file
-start java -jar %jarFile%
+java -jar %jarFile%
 
 endlocal
+
+pause
