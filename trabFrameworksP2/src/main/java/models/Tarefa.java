@@ -1,30 +1,22 @@
 package models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "idPessoa")
-    private Pessoa pessoa;
-
     private String titulo;
     private String descricao;
-    private LocalDate dataHora;
+    @Temporal(TemporalType.DATE)
+    private Date data;
 
-    public Tarefa() {
-    }
+    @ManyToOne
+    private Pessoa pessoa;
 
-    public Tarefa(String titulo, String descricao, LocalDate dataHora) {
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.dataHora = dataHora;
-    }
+    // Getters and Setters
 
     public int getId() {
         return id;
@@ -32,14 +24,6 @@ public class Tarefa {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
     }
 
     public String getTitulo() {
@@ -58,11 +42,24 @@ public class Tarefa {
         this.descricao = descricao;
     }
 
-    public LocalDate getDataHora() {
-        return dataHora;
+    public Date getData() {
+        return data;
     }
 
-    public void setDataHora(LocalDate dataHora) {
-        this.dataHora = dataHora;
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    @Override
+    public String toString() {
+        return "Tarefa{id=" + id + ", titulo='" + titulo + "', descricao='" + descricao + "', data=" + data + ", pessoa=" + pessoa + "}";
     }
 }

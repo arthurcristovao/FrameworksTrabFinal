@@ -1,7 +1,6 @@
 package models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,20 +8,13 @@ public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String nome;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Tarefa> tarefas = new ArrayList<>();
+    private List<Tarefa> tarefas;
 
-    public Pessoa() {
-    }
+    // Getters and Setters
 
-    public Pessoa(String nome) {
-        this.nome = nome;
-    }
-
-    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -47,14 +39,8 @@ public class Pessoa {
         this.tarefas = tarefas;
     }
 
-    // Métodos utilitários
-    public void addTarefa(Tarefa tarefa) {
-        tarefas.add(tarefa);
-        tarefa.setPessoa(this);
-    }
-
-    public void removeTarefa(Tarefa tarefa) {
-        tarefas.remove(tarefa);
-        tarefa.setPessoa(null);
+    @Override
+    public String toString() {
+        return "Pessoa{id=" + id + ", nome='" + nome + "'}";
     }
 }

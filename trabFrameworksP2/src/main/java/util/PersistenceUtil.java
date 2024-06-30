@@ -1,4 +1,4 @@
-package persistence;
+package util;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -16,9 +16,9 @@ public class PersistenceUtil {
             Map<String, String> jpaProperties = new HashMap<>();
             Dotenv dotenv = Dotenv.load();
 
-            String dbUrl = dotenv.get("TASK_APP_DATABASE_URL", "jdbc:mysql://localhost:3306/task_bot_app");
-            String dbUsername = dotenv.get("TASK_APP_DATABASE_USERNAME", "root");
-            String dbPassword = dotenv.get("TASK_APP_DATABASE_PASSWORD", "");
+            String dbUrl = dotenv.get("DATABASE_URL", "jdbc:mysql://localhost:3306/frameworksTrab");
+            String dbUsername = dotenv.get("DATABASE_USERNAME", "root");
+            String dbPassword = dotenv.get("DATABASE_PASSWORD", "");
 
             jpaProperties.put("javax.persistence.jdbc.url", dbUrl);
             jpaProperties.put("javax.persistence.jdbc.user", dbUsername);
@@ -32,7 +32,7 @@ public class PersistenceUtil {
 
     public static void close(EntityManagerFactory emf) {
         if (emf != null) {
-            emf.close();
+            emf.close();	
         }
     }
 }

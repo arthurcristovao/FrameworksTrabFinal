@@ -1,58 +1,61 @@
 package dao;
 
 import models.Pessoa;
-import persistence.PersistenceUtil;
+import models.Tarefa;
+import util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import java.util.List;
 
 public class PessoaDAO implements DAO<Pessoa> {
-    private EntityManagerFactory factory;
-    private EntityManager manager;
-
-    public PessoaDAO() {
-        this.factory = PersistenceUtil.getEntityManagerFactory();
-        this.manager = factory.createEntityManager();
-    }
+    private EntityManager em = PersistenceUtil.getEntityManagerFactory().createEntityManager();
 
     @Override
     public void insert(Pessoa pessoa) {
-        manager.getTransaction().begin();
-        manager.persist(pessoa);
-        manager.getTransaction().commit();
+        em.getTransaction().begin();
+        em.persist(pessoa);
+        em.getTransaction().commit();
     }
 
     @Override
     public void delete(int id) {
-        Pessoa pessoa = this.get(id);
+        em.getTransaction().begin();
+        Pessoa pessoa = em.find(Pessoa.class, id);
         if (pessoa != null) {
-            manager.getTransaction().begin();
-            manager.remove(pessoa);
-            manager.getTransaction().commit();
+            List<Tarefa> tarefas = em.createQuery("SELECT t FROM Tarefa t WHERE t.pessoa.id = :pessoaId", Tarefa.class)
+                                     .setParameter("pessoaId", id)
+                                     .getResultList();
+            for (Tarefa tarefa : tarefas) {
+                em.remove(tarefa);
+            }
+            em.remove(pessoa);
         }
+        em.getTransaction().commit();
     }
 
     @Override
     public void update(Pessoa pessoa) {
-        if (this.get(pessoa.getId()) != null) {
-            manager.getTransaction().begin();
-            manager.merge(pessoa);
-            manager.getTransaction().commit();
-        }
+        em.getTransaction().begin();
+        em.merge(pessoa);
+        em.getTransaction().commit();
     }
 
     @Override
     public List<Pessoa> list(int limit, int offset) {
-        return manager.createQuery("FROM Pessoa", Pessoa.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+        return em.createQuery("SELECT p FROM Pessoa p", Pessoa.class)
+                 .setFirstResult(offset)
+                 .setMaxResults(limit)
+                 .getResultList();
     }
 
     @Override
     public Pessoa get(int id) {
-        return manager.find(Pessoa.class, id);
+        return em.find(Pessoa.class, id);
+    }
+
+    public List<Pessoa> listByName(String name) {
+        return em.createQuery("SELECT p FROM Pessoa p WHERE p.nome LIKE :nome", Pessoa.class)
+                 .setParameter("nome", "%" + name + "%")
+                 .getResultList();
     }
 }

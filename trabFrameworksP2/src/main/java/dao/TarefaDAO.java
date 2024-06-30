@@ -1,59 +1,54 @@
 package dao;
 
 import models.Tarefa;
-import persistence.PersistenceUtil;
+import util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import java.util.List;
 
 public class TarefaDAO implements DAO<Tarefa> {
-    private EntityManagerFactory factory;
-    private EntityManager manager;
-
-    public TarefaDAO() {
-        this.factory = PersistenceUtil.getEntityManagerFactory();
-        this.manager = factory.createEntityManager();
-    }
+    private EntityManager em = PersistenceUtil.getEntityManagerFactory().createEntityManager();
 
     @Override
     public void insert(Tarefa tarefa) {
-        manager.getTransaction().begin();
-        manager.persist(tarefa);
-        manager.getTransaction().commit();
+        em.getTransaction().begin();
+        em.persist(tarefa);
+        em.getTransaction().commit();
     }
 
     @Override
     public void delete(int id) {
-        Tarefa tarefa = this.get(id);
+        em.getTransaction().begin();
+        Tarefa tarefa = em.find(Tarefa.class, id);
         if (tarefa != null) {
-            manager.getTransaction().begin();
-            manager.remove(tarefa);
-            manager.getTransaction().commit();
+            em.remove(tarefa);
         }
+        em.getTransaction().commit();
     }
 
     @Override
     public void update(Tarefa tarefa) {
-        if (this.get(tarefa.getId()) != null) {
-            manager.getTransaction().begin();
-            manager.merge(tarefa);
-            manager.getTransaction().commit();
-        }
+        em.getTransaction().begin();
+        em.merge(tarefa);
+        em.getTransaction().commit();
     }
 
     @Override
     public List<Tarefa> list(int limit, int offset) {
-        return manager.createQuery("FROM Tarefa", Tarefa.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+        return em.createQuery("SELECT t FROM Tarefa t", Tarefa.class)
+                 .setFirstResult(offset)
+                 .setMaxResults(limit)
+                 .getResultList();
     }
 
     @Override
     public Tarefa get(int id) {
-        return manager.find(Tarefa.class, id);
+        return em.find(Tarefa.class, id);
+    }
+
+    public List<Tarefa> listByPessoaId(int pessoaId) {
+        return em.createQuery("SELECT t FROM Tarefa t WHERE t.pessoa.id = :pessoaId", Tarefa.class)
+                 .setParameter("pessoaId", pessoaId)
+                 .getResultList();
     }
 }
-
