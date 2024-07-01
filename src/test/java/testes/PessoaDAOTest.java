@@ -4,6 +4,7 @@ import models.Pessoa;
 import org.junit.jupiter.api.*;
 
 import dao.PessoaDAO;
+import dao.TarefaDAO;
 import util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
@@ -15,32 +16,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PessoaDAOTest {
-    private EntityManagerFactory emf;
-    private EntityManager em;
     private PessoaDAO pessoaDAO;
-
-    @BeforeAll
-    public void setUpClass() {
-        emf = PersistenceUtil.getEntityManagerFactory();
-    }
 
     @BeforeEach
     public void setUp() {
-        em = emf.createEntityManager();
         pessoaDAO = new PessoaDAO();
     }
 
     @AfterEach
     public void tearDown() {
-        em.clear();
-        em.close();
-    }
-
-    @AfterAll
-    public void tearDownClass() {
-        if (emf != null) {
-            emf.close();
-        }
+        pessoaDAO = null;
     }
 
     @Test

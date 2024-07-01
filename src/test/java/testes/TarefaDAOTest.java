@@ -17,34 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TarefaDAOTest {
-    private EntityManagerFactory emf;
-    private EntityManager em;
     private TarefaDAO tarefaDAO;
     private PessoaDAO pessoaDAO;
 
-    @BeforeAll
-    public void setUpClass() {
-        emf = PersistenceUtil.getEntityManagerFactory();
-    }
-
     @BeforeEach
     public void setUp() {
-        em = emf.createEntityManager();
-        tarefaDAO = new TarefaDAO();
         pessoaDAO = new PessoaDAO();
+        tarefaDAO = new TarefaDAO();
     }
 
     @AfterEach
     public void tearDown() {
-        em.clear();
-        em.close();
-    }
-
-    @AfterAll
-    public void tearDownClass() {
-        if (emf != null) {
-            emf.close();
-        }
+        pessoaDAO = null;
+        tarefaDAO = null;
     }
 
     @Test
