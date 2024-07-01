@@ -14,7 +14,7 @@ public class PersistenceUtil {
     public static EntityManagerFactory getEntityManagerFactory() {
         if (entityManagerFactory == null) {
             Map<String, String> jpaProperties = new HashMap<>();
-            Dotenv dotenv = Dotenv.load();
+            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().ignoreIfMalformed().load();
 
             String dbUrl = dotenv.get("DATABASE_URL", "jdbc:mysql://localhost:3306/frameworksTrab");
             String dbUsername = dotenv.get("DATABASE_USERNAME", "root");
@@ -32,7 +32,7 @@ public class PersistenceUtil {
 
     public static void close(EntityManagerFactory emf) {
         if (emf != null) {
-            emf.close();	
+            emf.close();
         }
     }
 }

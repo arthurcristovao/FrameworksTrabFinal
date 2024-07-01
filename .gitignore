@@ -45,5 +45,8 @@ buildNumber.properties
 #dotenv
 .env
 
-# vscode
+#.vscode
 .vscode
+
+#.eclipse
+.settings
