@@ -6,12 +6,12 @@ _Work in progress._
 
 ## Environment Setup
 
-Ensure you have the latest Java JDK and Maven installed before proceeding with the setup.
+Ensure you have atleast JDK 17 and Maven installed before proceeding with the setup.
 
 1. Database Configuration: The application uses environment variables to configure the database connection by default. If not set, it falls back to the following settings:
-   - **TASK_APP_DATABASE_URL**: `jdbc:mysql://localhost:3306/task_bot_app` (MySQL 8.3.x server with the `task_bot_app` database already created)
-   - **TASK_APP_DATABASE_USERNAME**: `root` (Default user; should have appropriate permissions for Hibernate schema management)
-   - **TASK_APP_DATABASE_PASSWORD**: empty
+   - **DATABASE_URL**: `jdbc:mysql://localhost:3306/frameworksTrab` (MySQL 8.3.x server with the `frameworksTrab` database already created)
+   - **DATABASE_USERNAME**: `root` (Default user; should have appropriate permissions for Hibernate schema management)
+   - **DATABASE_PASSWORD**: empty
 
 _Note: These default values are suitable for a freshly installed MySQL server running locally. It is recommended
 to change them._
