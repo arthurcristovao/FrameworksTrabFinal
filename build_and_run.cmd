@@ -1,13 +1,9 @@
 @echo off
 
-cd trabFrameworksP2
 call mvn clean package
 
 :: Set JAR path
-set "jarFile=trabFrameworksP2\target\taskapp.jar"
-
-:: Return to original directory
-cd ..
+set "jarFile=target\taskapp.jar"
 
 setlocal enabledelayedexpansion
 
